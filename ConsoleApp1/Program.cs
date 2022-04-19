@@ -18,4 +18,3 @@ foreach (var path in paths)
 {
     corrector.Correct(path);
 }
-Console.WriteLine(Corrector.ct);

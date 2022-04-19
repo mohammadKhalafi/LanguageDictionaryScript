@@ -4,7 +4,7 @@ namespace ConsoleApp1;
 
 public class CorrectorCreator
 {
-    private static readonly string pattern = $@"LanguageDictionary.GetUIEntries\(""(.*?)""(?:\s*,)?";
+    private static readonly string pattern = $@"LanguageDictionary.GetUIEntries\([\n\r\t]*""(.*?)""(?:\s*,\s*)?";
 
     public  Corrector CreateCorrector(FileNameGetter fileNameGetter)
     {
@@ -16,18 +16,16 @@ public class CorrectorCreator
             try
             {
                 return $"LanguageDictionaryProvider.Instance.{fileNameGetter.GetFileName(key)}.{key}(";
-
             }
             catch (Exception e)
             {
-                Console.WriteLine(key);
+                Console.WriteLine($"key not found: {key}");
             }
-
 
             return match.Groups[0].Value;
         }
 
-        MatchEvaluator evaluator = new MatchEvaluator(WordScrambler);
+        var evaluator = new MatchEvaluator(WordScrambler);
 
         return new Corrector(evaluator, regex);
     }
